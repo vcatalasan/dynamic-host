@@ -19,13 +19,13 @@ add_filter('option_siteurl', 'dynamic_url');
 
 foreach( [ 'post', 'page', 'attachment', 'post_type' ] as $type )
 {
-	add_filter( $type . '_link', function ( $url, $post_id, $sample ) use ( $type )
+	add_filter( $type . '_link', function ( $url ) use ( $type )
 	{
-		return apply_filters( 'wpse_link', $url, $post_id, $sample, $type );
-	}, PHP_INT_MAX, 3 );
+		return apply_filters( 'wpse_link', $url );
+	}, PHP_INT_MAX, 1 );
 }
 
-add_filter( 'wpse_link', function(  $url, $post_id, $sample, $type )
+add_filter( 'wpse_link', function(  $url )
 {
 	return dynamic_url($url);
-}, 10, 4 );
+}, 10, 1);
