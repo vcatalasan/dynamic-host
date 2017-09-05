@@ -19,10 +19,10 @@ add_filter('option_siteurl', 'dynamic_url');
 
 foreach( [ 'post', 'page', 'attachment', 'post_type' ] as $type )
 {
-	add_filter( $type . '_link', function ( $url ) use ( $type )
+	add_filter( $type . '_link', function ( $url, $post_id, $sample ) use ( $type )
 	{
 		return apply_filters( 'wpse_link', $url );
-	}, PHP_INT_MAX, 1 );
+	}, PHP_INT_MAX, 3 );
 }
 
 add_filter( 'wpse_link', function(  $url )
