@@ -2,7 +2,7 @@
 /*
 Plugin Name: Dynamic Host
 Description: Allows Wordpress to run anywhere i.e. local, development, or production.
-Version: 1.0.0
+Version: 1.0.1
 Author: Val Catalasan
 */
 
@@ -43,8 +43,9 @@ add_filter( 'get_blogs_of_user', function($sites, $user_id, $all){
 
 add_action( 'init', function() {
     ob_start(function($buffer){
-        preg_match('/(.+):/', DYNAMIC_HOST, $host);
-        return str_replace('localhost', $host[1], $buffer);
+        //preg_match('/(.+):/', DYNAMIC_HOST, $host);
+	    $output = str_replace('dev.local', DYNAMIC_HOST, $buffer);
+        return $output;
     });
 });
 
