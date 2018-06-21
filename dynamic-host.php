@@ -43,8 +43,9 @@ add_filter( 'get_blogs_of_user', function($sites, $user_id, $all){
 
 add_action( 'init', function() {
     ob_start(function($buffer){
-        //preg_match('/(.+):/', DYNAMIC_HOST, $host);
-	    $output = str_replace('dev.local', DYNAMIC_HOST, $buffer);
+        $site_url = get_option('site_url');
+        $dynamic_url = dynamic_url(DYNAMIC_HOST);
+	    $output = str_replace($site_url, $dynamic_url, $buffer);
         return $output;
     });
 });
