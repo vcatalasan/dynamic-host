@@ -2,7 +2,7 @@
 /*
 Plugin Name: Dynamic Host
 Description: Allows Wordpress to run anywhere i.e. local, development, or production.
-Version: 1.0.2
+Version: 1.0.3
 Author: Val Catalasan
 */
 
@@ -14,7 +14,8 @@ function dynamic_url($url) {
 	$scheme = isset($_SERVER['HTTP_X_FORWARDED_PROTO']) ? $_SERVER['HTTP_X_FORWARDED_PROTO'] : $result['scheme'];
 	$host   = DYNAMIC_HOST; //isset($_SERVER['HTTP_X_ORIGINAL_HOST']) ? $_SERVER['HTTP_X_ORIGINAL_HOST'] : $_SERVER['HTTP_HOST'];
 	$path = isset($result['path']) ? $result['path'] : '';
-	$url = $scheme . '://' . $host . $path;
+    $query = isset($result['query']) ? "?{$result['query']}" : '';
+	$url = $scheme . '://' . $host . $path . $query;
 	return $url;
 }
 
