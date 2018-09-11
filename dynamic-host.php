@@ -6,6 +6,8 @@ Version: 1.0.6
 Author: Val Catalasan
 */
 
+if (class_exists('Dynamic_Host')) return;
+
 define( 'DYNAMIC_HOST', isset($_SERVER['HTTP_X_ORIGINAL_HOST']) ? $_SERVER['HTTP_X_ORIGINAL_HOST'] : $_SERVER['HTTP_HOST'] );
 define( 'SITE_URL', get_option('siteurl'));
 
