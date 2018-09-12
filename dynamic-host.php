@@ -2,14 +2,9 @@
 /*
 Plugin Name: Dynamic Host
 Description: Allows Wordpress to run anywhere i.e. local, development, or production.
-Version: 1.0.6
+Version: 1.0.7
 Author: Val Catalasan
 */
-
-if (class_exists('Dynamic_Host')) return;
-
-define( 'DYNAMIC_HOST', isset($_SERVER['HTTP_X_ORIGINAL_HOST']) ? $_SERVER['HTTP_X_ORIGINAL_HOST'] : $_SERVER['HTTP_HOST'] );
-define( 'SITE_URL', get_option('siteurl'));
 
 class Dynamic_Host {
 
@@ -42,6 +37,9 @@ class Dynamic_Host {
         });
 
         add_action('init', function() {
+            define( 'DYNAMIC_HOST', isset($_SERVER['HTTP_X_ORIGINAL_HOST']) ? $_SERVER['HTTP_X_ORIGINAL_HOST'] : $_SERVER['HTTP_HOST'] );
+            define( 'SITE_URL', get_option('siteurl'));
+
             ob_start(function ($buffer) {
                 $dynamic_url = $this->dynamic_url(SITE_URL);
                 $output = str_replace(SITE_URL, $dynamic_url, $buffer);
