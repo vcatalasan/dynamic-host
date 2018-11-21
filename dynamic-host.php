@@ -2,9 +2,12 @@
 /*
 Plugin Name: Dynamic Host
 Description: Allows Wordpress to run anywhere i.e. local, development, or production.
-Version: 1.0.7
+Version: 1.0.8
 Author: Val Catalasan
 */
+
+define( 'DYNAMIC_HOST', isset($_SERVER['HTTP_X_ORIGINAL_HOST']) ? $_SERVER['HTTP_X_ORIGINAL_HOST'] : $_SERVER['HTTP_HOST'] );
+define( 'SITE_URL', get_option('siteurl'));
 
 class Dynamic_Host {
 
@@ -36,10 +39,25 @@ class Dynamic_Host {
             return $this->dynamic_url($location);
         });
 
-        add_action('init', function() {
-            define( 'DYNAMIC_HOST', isset($_SERVER['HTTP_X_ORIGINAL_HOST']) ? $_SERVER['HTTP_X_ORIGINAL_HOST'] : $_SERVER['HTTP_HOST'] );
-            define( 'SITE_URL', get_option('siteurl'));
+        add_filter('site_url', function($url, $path, $scheme, $blog_id) {
+            return $this->dynamic_url($url);
+        }, 10, 4);
 
+        add_filter('admin_url', function($url, $path, $blog_id) {
+            return $this->dynamic_url($url);
+        }, 10, 3);
+
+        add_filter('plugins_url', function($url, $path, $plugin) {
+            return $this->dynamic_url($url);
+        }, 10, 3);
+
+        add_filter('upload_dir', function($param) {
+            $param['url'] = $this->dynamic_url($param['url']);
+            $param['baseurl'] = $this->dynamic_url($param['baseurl']);
+            return $param;
+        });
+
+        add_action('init', function() {
             ob_start(function ($buffer) {
                 $dynamic_url = $this->dynamic_url(SITE_URL);
                 $output = str_replace(SITE_URL, $dynamic_url, $buffer);
