@@ -2,7 +2,7 @@
 /*
 Plugin Name: Dynamic Host
 Description: Allows Wordpress to run anywhere i.e. local, development, or production.
-Version: 1.0.8
+Version: 1.0.9
 Author: Val Catalasan
 */
 
@@ -37,7 +37,7 @@ class Dynamic_Host {
 
         add_filter('wp_redirect', function($location, $status) {
             return $this->dynamic_url($location);
-        });
+        }, 10, 2);
 
         add_filter('site_url', function($url, $path, $scheme, $blog_id) {
             return $this->dynamic_url($url);
