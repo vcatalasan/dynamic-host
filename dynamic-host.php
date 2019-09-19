@@ -16,7 +16,7 @@ class Dynamic_Host {
     /**
      * Return an instance of this class.
      *
-     * @since     1.0.0
+     * @since     1.0.1
      *
      * @return    object    A single instance of this class.
      */
@@ -60,7 +60,7 @@ class Dynamic_Host {
         add_action('init', function() {
             ob_start(function ($buffer) {
                 $dynamic_url = $this->dynamic_url(SITE_URL);
-                $output = str_replace(SITE_URL, $dynamic_url, $buffer);
+                $output = str_replace($this->host(SITE_URL), $this->host($dynamic_url), $buffer);
                 return $output;
             });
         });
@@ -71,14 +71,12 @@ class Dynamic_Host {
     }
 
     function dynamic_url( $url ) {
-        $result = parse_url($url);
-        $scheme = isset($_SERVER['HTTP_X_FORWARDED_PROTO']) ? $_SERVER['HTTP_X_FORWARDED_PROTO'] : $result['scheme'];
-        if (empty($scheme)) $scheme='http';
-        $host = DYNAMIC_HOST; //isset($_SERVER['HTTP_X_ORIGINAL_HOST']) ? $_SERVER['HTTP_X_ORIGINAL_HOST'] : $_SERVER['HTTP_HOST'];
-        $path = isset($result['path']) ? $result['path'] : '';
-        $query = isset($result['query']) ? "?{$result['query']}" : '';
-        $url = $scheme . '://' . $host . $path . $query;
-        return $url;
+        $host = $this->host( $url );
+        return str_replace($host, '//' . DYNAMIC_HOST, $url);
+    }
+
+    function host( $url ) {
+        return '//' . parse_url($url, PHP_URL_HOST);
     }
 }
 
