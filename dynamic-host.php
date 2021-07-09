@@ -6,8 +6,8 @@ Version: 1.0.9
 Author: Val Catalasan
 */
 
-define( 'DYNAMIC_HOST', parse_url(isset($_SERVER['HTTP_X_ORIGINAL_HOST']) ? $_SERVER['HTTP_X_ORIGINAL_HOST'] : $_SERVER['HTTP_HOST'], PHP_URL_HOST) );
-define( 'SITE_URL', get_option('siteurl'));
+define( 'DYNAMIC_HOST', parse_url(($_SERVER['HTTPS'] ? 'https' : 'http')."://{$_SERVER['HTTP_HOST']}", PHP_URL_HOST) );
+define( 'SITE_URL', get_option('siteurl') );
 
 class Dynamic_Host {
 
